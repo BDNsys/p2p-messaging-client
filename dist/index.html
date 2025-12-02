@@ -15,6 +15,10 @@
             --border-color: #333;
         }
 
+        * {
+            box-sizing: border-box;
+        }
+
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background-color: var(--bg-color);
@@ -34,6 +38,7 @@
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
             text-align: center;
             width: 300px;
+            max-width: 90vw;
         }
 
         #app-container {
@@ -45,6 +50,24 @@
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
             overflow: hidden;
             flex-direction: row;
+            position: relative;
+        }
+
+        /* Mobile Toggle Button */
+        #sidebar-toggle {
+            display: none;
+            position: absolute;
+            top: 1rem;
+            left: 1rem;
+            z-index: 1000;
+            background-color: var(--primary-color);
+            color: #000;
+            border: none;
+            border-radius: 4px;
+            padding: 0.5rem 0.75rem;
+            font-size: 1.2rem;
+            cursor: pointer;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
         }
 
         /* Sidebar */
@@ -54,6 +77,7 @@
             border-right: 1px solid var(--border-color);
             display: flex;
             flex-direction: column;
+            transition: transform 0.3s ease;
         }
 
         #sidebar-header {
@@ -61,6 +85,21 @@
             border-bottom: 1px solid var(--border-color);
             font-weight: bold;
             color: var(--primary-color);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        #close-sidebar {
+            display: none;
+            background: none;
+            border: none;
+            color: var(--text-color);
+            font-size: 1.5rem;
+            cursor: pointer;
+            padding: 0;
+            width: 30px;
+            height: 30px;
         }
 
         #peers-list {
@@ -79,10 +118,15 @@
             display: flex;
             align-items: center;
             justify-content: space-between;
+            min-height: 44px;
         }
 
         .peer-item:hover {
             background-color: #333;
+        }
+
+        .peer-item:active {
+            background-color: #3a3a3a;
         }
 
         .peer-status {
@@ -117,6 +161,7 @@
             display: flex;
             flex-direction: column;
             gap: 0.5rem;
+            -webkit-overflow-scrolling: touch;
         }
 
         .message {
@@ -161,6 +206,7 @@
             background-color: #252525;
             color: var(--text-color);
             outline: none;
+            font-size: 16px;
         }
 
         input[type="text"]:focus {
@@ -176,10 +222,16 @@
             font-weight: bold;
             cursor: pointer;
             transition: opacity 0.2s;
+            min-height: 44px;
+            touch-action: manipulation;
         }
 
         button:hover {
             opacity: 0.9;
+        }
+
+        button:active {
+            opacity: 0.7;
         }
 
         /* Scrollbar */
@@ -199,6 +251,113 @@
         ::-webkit-scrollbar-thumb:hover {
             background: #444;
         }
+
+        /* Mobile Optimizations */
+        @media (max-width: 768px) {
+            body {
+                height: 100dvh;
+            }
+
+            #login-container {
+                width: 100%;
+                max-width: 90vw;
+                padding: 1.5rem;
+            }
+
+            #app-container {
+                width: 100vw;
+                height: 100dvh;
+                border-radius: 0;
+            }
+
+            #sidebar-toggle {
+                display: block;
+            }
+
+            #sidebar {
+                position: absolute;
+                top: 0;
+                left: 0;
+                height: 100%;
+                z-index: 999;
+                transform: translateX(-100%);
+                box-shadow: 2px 0 8px rgba(0, 0, 0, 0.5);
+            }
+
+            #sidebar.active {
+                transform: translateX(0);
+            }
+
+            #close-sidebar {
+                display: block;
+            }
+
+            #chat-header {
+                padding-left: 3.5rem;
+            }
+
+            .message {
+                max-width: 85%;
+                font-size: 0.95rem;
+            }
+
+            #input-area {
+                padding: 0.75rem;
+            }
+
+            input[type="text"] {
+                padding: 0.65rem;
+            }
+
+            button {
+                padding: 0.65rem 1rem;
+            }
+
+            ::-webkit-scrollbar {
+                width: 4px;
+            }
+        }
+
+        /* Extra small phones */
+        @media (max-width: 480px) {
+            #login-container {
+                padding: 1rem;
+            }
+
+            #login-container h2 {
+                font-size: 1.5rem;
+            }
+
+            .message {
+                max-width: 90%;
+                padding: 0.6rem;
+                font-size: 0.9rem;
+            }
+
+            button {
+                font-size: 0.9rem;
+            }
+
+            #sidebar {
+                width: 80vw;
+                max-width: 280px;
+            }
+        }
+
+        /* Landscape mode on phones */
+        @media (max-height: 500px) and (orientation: landscape) {
+            #login-container {
+                padding: 1rem;
+            }
+
+            #messages {
+                padding: 0.5rem;
+            }
+
+            #input-area {
+                padding: 0.5rem;
+            }
+        }
     </style>
 </head>
 
@@ -215,8 +374,12 @@
     </div>
 
     <div id="app-container">
+        <button id="sidebar-toggle">☰</button>
         <div id="sidebar">
-            <div id="sidebar-header">Active Peers</div>
+            <div id="sidebar-header">
+                <span>Active Peers</span>
+                <button id="close-sidebar">×</button>
+            </div>
             <div id="peers-list">
                 <!-- Peers will be added here -->
             </div>

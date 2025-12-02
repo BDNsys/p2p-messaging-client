@@ -288,6 +288,30 @@ const ui = {
         this.messageInput.addEventListener('keypress', (e) => {
             if (e.key === 'Enter') this.handleSend();
         });
+
+        // Mobile sidebar toggle
+        const sidebarToggle = document.getElementById('sidebar-toggle');
+        const closeSidebar = document.getElementById('close-sidebar');
+        const sidebar = document.getElementById('sidebar');
+
+        const toggleSidebar = () => {
+            sidebar.classList.toggle('active');
+        };
+
+        if (sidebarToggle) {
+            sidebarToggle.addEventListener('click', toggleSidebar);
+        }
+
+        if (closeSidebar) {
+            closeSidebar.addEventListener('click', toggleSidebar);
+        }
+
+        // Close sidebar when clicking on a peer on mobile
+        this.peersList.addEventListener('click', (e) => {
+            if (window.innerWidth <= 768 && e.target.closest('.peer-item')) {
+                sidebar.classList.remove('active');
+            }
+        });
     },
 
     handleLogin() {
