@@ -1,7 +1,3 @@
-work
-
-
-
 name: Django to cPanel CI/CD
 
 on:
