@@ -33,6 +33,7 @@
     "webpack-dev-server": "^4.15.0"
   },
   "dependencies": {
-    "p2p-messaging": "file:../p2p-messaging/pkg"
+    
+    "ws": "^8.18.3"
   }
 }
